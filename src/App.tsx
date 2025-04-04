@@ -1,11 +1,7 @@
-import { useState } from "react";
 import "./App.css";
 
-import {
-  GoogleGenerativeAI,
-  HarmCategory,
-  HarmBlockThreshold,
-} from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import fs from "fs";
 
 const apiKey = import.meta.env.VITE_API_KEY; // get API key from .env file
 const genAI = new GoogleGenerativeAI(apiKey);
@@ -15,7 +11,7 @@ const model = genAI.getGenerativeModel({
 });
 
 const generationConfig = {
-  // default config, might change later
+  // default config, might apply it / change it later
   temperature: 1,
   topP: 0.95,
   topK: 64,
@@ -24,14 +20,28 @@ const generationConfig = {
   responseMimeType: "text/plain",
 };
 
-async function run() {
-  const chatSession = model.startChat({
-    generationConfig,
-    history: [],
-  });
+// Converts local file information to base64
+function fileToGenerativePart(path, mimeType) {
+  return {
+    inlineData: {
+      data: Buffer.from(fs.readFileSync(path)).toString("base64"),
+      mimeType,
+    },
+  };
+}
 
-  const result = await chatSession.sendMessage("hey bozo whatsupp");
-  console.log(result.response.text());
+async function run() {
+  const prompt =
+    "Write an advertising jingle showing how the product in the first image could solve the problems shown in the second two images.";
+
+  const imageParts = [
+    fileToGenerativePart("jetpack.jpg", "image"),
+    fileToGenerativePart("piranha.jpg", "image"),
+  ];
+
+  const generatedContent = await model.generateContent([prompt, ...imageParts]);
+
+  console.log(generatedContent.response.text());
 }
 
 run();
