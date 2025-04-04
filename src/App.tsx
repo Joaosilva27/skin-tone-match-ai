@@ -2,6 +2,7 @@ import "./App.css";
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import fs from "fs";
+import CustomWebcam from "./components/CustomWebcam";
 
 const apiKey = import.meta.env.VITE_API_KEY; // get API key from .env file
 const genAI = new GoogleGenerativeAI(apiKey);
@@ -34,12 +35,9 @@ async function run() {
   const prompt =
     "Write an advertising jingle showing how the product in the first image could solve the problems shown in the second two images.";
 
-  const imageParts = [
-    fileToGenerativePart("jetpack.jpg", "image"),
-    fileToGenerativePart("piranha.jpg", "image"),
-  ];
+  const image = fileToGenerativePart("jetpack.jpg", "image");
 
-  const generatedContent = await model.generateContent([prompt, ...imageParts]);
+  const generatedContent = await model.generateContent([prompt, image]);
 
   console.log(generatedContent.response.text());
 }
@@ -56,6 +54,8 @@ function App() {
   return (
     <div>
       <h1>Skin Tone Match AI</h1>
+      <CustomWebcam />
+      <button>Run AI</button>
     </div>
   );
 }
