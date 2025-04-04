@@ -3,3 +3,57 @@
   padding: 2rem;
   text-align: center;
 }
+
+.app-container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+h2.ai-response-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-top: 20px;
+}
+
+h3.ai-response-subheader {
+  font-size: 1.25rem;
+  font-weight: normal;
+  color: #555;
+}
+
+.ai-response-paragraph {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.ai-response-bold {
+  font-weight: bold;
+  color: #000;
+}
+
+.ai-response-list {
+  list-style-type: disc;
+  margin-left: 20px;
+  margin-bottom: 15px;
+}
+
+.ai-response-ordered-list {
+  list-style-type: decimal;
+  margin-left: 20px;
+  margin-bottom: 15px;
+}
+
+.ai-response-list-item {
+  margin-bottom: 5px;
+  font-size: 1rem;
+  color: #333;
+}
