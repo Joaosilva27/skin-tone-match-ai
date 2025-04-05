@@ -9,18 +9,20 @@ const CustomWebcam: React.FC<CustomWebcamProps> = ({ setImgSrc }) => {
   const webcamRef = useRef<Webcam>(null);
 
   const capture = useCallback(() => {
-    if (webcamRef.current != null) {
-      const imageSrc = webcamRef.current.getScreenshot();
-      setImgSrc(imageSrc);
-    }
+    const imageSrc = webcamRef.current?.getScreenshot();
+    imageSrc && setImgSrc(imageSrc);
   }, [webcamRef, setImgSrc]);
 
   return (
-    <div className="container">
-      <Webcam height={300} width={300} ref={webcamRef} />
-      <div className="btn-container">
-        <button onClick={capture}>Capture photo</button>
-      </div>
+    <div className="camera-container">
+      <Webcam
+        ref={webcamRef}
+        className="webcam-feed"
+        screenshotFormat="image/jpeg"
+      />
+      <button onClick={capture} className="capture-button">
+        Capture Photo
+      </button>
     </div>
   );
 };

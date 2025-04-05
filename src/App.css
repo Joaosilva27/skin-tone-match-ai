@@ -1,59 +1,201 @@
-#root {
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+:root {
+  --primary: #ff7eb6;
+  --secondary: #ff65a3;
+  --background: #fff5f8;
+  --text: #2d2d2d;
+  --glass: rgba(255, 255, 255, 0.9);
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+  margin: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .app-container {
-  font-family: Arial, sans-serif;
-  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
 }
 
-h1 {
-  font-size: 2rem;
-  font-weight: bold;
+.header {
   text-align: center;
+  margin-bottom: 1.5rem;
+  padding: 0 1rem;
 }
 
-h2.ai-response-header {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
-  margin-top: 20px;
+.title-gradient {
+  background: linear-gradient(45deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
 }
 
-h3.ai-response-subheader {
-  font-size: 1.25rem;
-  font-weight: normal;
-  color: #555;
-}
-
-.ai-response-paragraph {
+.subtitle {
+  color: #666;
   font-size: 1rem;
-  line-height: 1.5;
-  margin-bottom: 10px;
-  color: #333;
 }
 
-.ai-response-bold {
-  font-weight: bold;
-  color: #000;
+.content-wrapper {
+  background: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+}
+
+.camera-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.webcam-feed {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: auto;
+  max-width: 400px;
+  aspect-ratio: 1;
+}
+
+.capture-button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 400px;
+}
+
+.preview-image {
+  border-radius: 15px;
+  border: 4px solid white;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.analyze-button {
+  background: linear-gradient(45deg, var(--primary), var(--secondary));
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 400px;
+  margin: 1rem auto;
+  display: block;
+}
+
+.glassmorphism {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 2rem;
+  margin-top: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.ai-response-container {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.ai-response-header {
+  color: var(--secondary);
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+.ai-response-subheader {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 1rem 0;
 }
 
 .ai-response-list {
-  list-style-type: disc;
-  margin-left: 20px;
-  margin-bottom: 15px;
-}
-
-.ai-response-ordered-list {
-  list-style-type: decimal;
-  margin-left: 20px;
-  margin-bottom: 15px;
+  list-style: none;
+  padding: 0;
 }
 
 .ai-response-list-item {
-  margin-bottom: 5px;
-  font-size: 1rem;
-  color: #333;
+  background: var(--background);
+  padding: 1rem;
+  margin: 0.5rem 0;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ai-response-bold {
+  color: var(--secondary);
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 0.5rem;
+  }
+
+  .content-wrapper {
+    padding: 1rem;
+    border-radius: 15px;
+  }
+
+  .title-gradient {
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .capture-button {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
+  .analyze-button {
+    padding: 12px 24px;
+    font-size: 0.95rem;
+  }
+
+  .ai-response-container {
+    padding: 1rem;
+  }
+
+  .ai-response-header {
+    font-size: 1.2rem;
+  }
+
+  .ai-response-subheader {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .title-gradient {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+  }
 }
