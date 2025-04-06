@@ -15,9 +15,11 @@ const model = genAI.getGenerativeModel({
 function App() {
   const [imgSrc, setImgSrc] = useState<string | null>(null);
   const [aiResponse, setAiResponse] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
 
   async function run() {
     if (!imgSrc) return;
+    setIsLoading(true);
 
     const prompt = `You are a professional makeup analyzer:
     With the given picture:
@@ -40,6 +42,8 @@ function App() {
       setAiResponse(generatedContent.response.text());
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -62,9 +66,22 @@ function App() {
           )}
         </div>
 
-        <button onClick={run} className="analyze-button">
-          Analyze My Skin
+        <button onClick={run} className="analyze-button" disabled={isLoading}>
+          {isLoading ? "Analyzing..." : "Analyze My Skin"}
         </button>
+
+        {isLoading && (
+          <div className="loader-container">
+            <div className="makeup-loader">
+              <div className="lipstick"></div>
+              <div className="dots">
+                <div className="dot"></div>
+                <div className="dot"></div>
+                <div className="dot"></div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {aiResponse && (
           <div className="ai-response-container">
