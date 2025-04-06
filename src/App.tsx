@@ -23,8 +23,10 @@ function App() {
     With the given picture:
     - Analyze my skin color and tell me what shade it is.
     - Give me a list of foundations to buy, with name, shade, and brand.
+    - For the list of foundations, you must write only 3 titles: brand, name and shade.
     - Foundations must be available in Europe.
-    - Start immediately with color analysis.`;
+    - Start immediately with color analysis.
+    - IMPORTANT!!! You must only write two sections, the first one being color analysis, second one being the recommended foundations.`;
 
     const image = {
       inlineData: {
