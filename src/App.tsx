@@ -44,15 +44,19 @@ function App() {
   return (
     <div className="app-container">
       <header className="header">
-        <h1 className="title-gradient">Glow Guide</h1>
-        <p className="subtitle">AI-Powered Makeup Analysis</p>
+        <h1 className="title-gradient">🌸 Skin Match AI</h1>
+        <p className="subtitle">Discover Your Perfect Makeup Match</p>
       </header>
 
       <div className="content-wrapper">
-        <div className="camera-section">
-          <CustomWebcam setImgSrc={setImgSrc} />
+        <div className="media-container">
+          <div className="webcam-wrapper">
+            <CustomWebcam setImgSrc={setImgSrc} />
+          </div>
           {imgSrc && (
-            <img src={imgSrc} alt="Captured" className="preview-image" />
+            <div className="preview-wrapper">
+              <img src={imgSrc} alt="Captured" className="preview-image" />
+            </div>
           )}
         </div>
 
@@ -61,7 +65,7 @@ function App() {
         </button>
 
         {aiResponse && (
-          <div className="ai-response-container glassmorphism">
+          <div className="ai-response-container">
             <ReactMarkdown
               children={aiResponse}
               remarkPlugins={[remarkGfm]}
