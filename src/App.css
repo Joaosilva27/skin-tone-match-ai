@@ -162,6 +162,7 @@ body {
 .ai-response-bold {
   color: var(--secondary);
   font-weight: 600;
+  margin: 1rem;
 }
 
 @media (max-width: 768px) {
