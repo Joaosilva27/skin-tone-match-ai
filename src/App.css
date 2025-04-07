@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
   --primary: #ff7eb6;
   --secondary: #ff65a3;
@@ -82,7 +84,7 @@ body {
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  width: 100%;
+  width: fit-content;
   margin-top: 1rem;
   display: flex;
   align-items: center;
@@ -104,7 +106,7 @@ body {
   font-size: 1.1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  width: 100%;
+  width: fit-content;
   margin: 2rem auto;
   display: block;
   box-shadow: var(--shadow);
