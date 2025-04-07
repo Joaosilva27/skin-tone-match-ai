@@ -66,7 +66,7 @@ function App() {
           )}
         </div>
 
-        <div className="input-container">
+        <div className="input-container flex justify-center items-center">
           <input
             type="text"
             value={country}
