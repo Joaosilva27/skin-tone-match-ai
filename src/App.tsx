@@ -16,6 +16,7 @@ function App() {
   const [imgSrc, setImgSrc] = useState<string | null>(null);
   const [aiResponse, setAiResponse] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+  const [country, setCountry] = useState(""); // Add country state
 
   async function run() {
     if (!imgSrc) return;
@@ -25,7 +26,7 @@ function App() {
     With the given picture:
     - Analyze my skin color and tell me what shade it is.
     - Give me a list of foundations to buy, with name, shade, and brand.
-    - Foundations must be available in Europe.
+    - Foundations must be available in ${country || "Europe"}. 
     - Start immediately with color analysis.
     - IMPORTANT!!! You must only write two sections, the first one being a in-depth color analysis, second one being the recommended foundations.`;
 
@@ -47,7 +48,7 @@ function App() {
   }
 
   return (
-    <div className="app-container">
+    <div className="app-container pt-6">
       <header className="header">
         <h1 className="title-gradient">🌸 Skin Match AI</h1>
         <p className="subtitle">Discover Your Perfect Makeup Match</p>
@@ -65,9 +66,18 @@ function App() {
           )}
         </div>
 
-        <button onClick={run} className="analyze-button" disabled={isLoading}>
-          {isLoading ? "Analyzing..." : "Analyze My Skin"}
-        </button>
+        <div className="input-container">
+          <input
+            type="text"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            placeholder="Enter your country"
+            className="country-input"
+          />
+          <button onClick={run} className="analyze-button" disabled={isLoading}>
+            {isLoading ? "Analyzing..." : "Analyze My Skin"}
+          </button>
+        </div>
 
         {isLoading && (
           <div className="loader-container">

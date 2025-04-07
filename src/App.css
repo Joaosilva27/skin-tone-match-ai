@@ -293,3 +293,24 @@ body {
   transform: none !important;
   box-shadow: none !important;
 }
+
+.input-container {
+  display: flex;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  justify-content: center;
+}
+
+.country-input {
+  padding: 0.8rem 1.2rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  width: 200px;
+  transition: border-color 0.3s ease;
+}
+
+.country-input:focus {
+  outline: none;
+  border-color: #a78bfa;
+}

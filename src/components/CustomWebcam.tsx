@@ -20,7 +20,7 @@ const CustomWebcam: React.FC<CustomWebcamProps> = ({ setImgSrc }) => {
         className="webcam-feed"
         screenshotFormat="image/jpeg"
       />
-      <div className="flex">
+      <div className="flex justify-center items-center">
         <button
           onClick={capture}
           className="capture-button flex justify-content w-full"
