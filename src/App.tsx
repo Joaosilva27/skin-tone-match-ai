@@ -189,38 +189,45 @@ function App() {
                 </h3>
                 <div className="foundation-grid flex flex-wrap justify-center gap-8 px-4">
                   {foundations.map((foundation, index) => (
-                    <div
-                      key={index}
-                      className="foundation-card relative bg-gradient-to-br from-pink-50 to-rose-50 rounded-xl p-6 w-80 shadow-md hover:shadow-lg transition-all duration-300 border border-rose-100"
+                    <a
+                      href={`https://www.google.com/search?q=${
+                        foundation.brand + foundation.name + foundation.shade
+                      }`}
+                      target="_blank"
                     >
-                      <div className="foundation-info mb-4">
-                        <p className="text-xl font-semibold text-rose-700 mb-3 tracking-tight">
-                          {foundation.name}
-                        </p>
-                        <div className="space-y-2 text-rose-600">
-                          <p className="text-sm uppercase tracking-wide font-medium text-rose-500">
-                            {foundation.brand}
+                      <div
+                        key={index}
+                        className="foundation-card relative bg-gradient-to-br from-pink-50 to-rose-50 rounded-xl p-6 w-80 shadow-md hover:shadow-lg transition-all duration-300 border border-rose-100"
+                      >
+                        <div className="foundation-info mb-4">
+                          <p className="text-xl font-semibold text-rose-700 mb-3 tracking-tight">
+                            {foundation.name}
                           </p>
-                          <p className="text-sm text-rose-400">
-                            Shade: {foundation.shade}
-                          </p>
+                          <div className="space-y-2 text-rose-600">
+                            <p className="text-sm uppercase tracking-wide font-medium text-rose-500">
+                              {foundation.brand}
+                            </p>
+                            <p className="text-sm text-rose-400">
+                              Shade: {foundation.shade}
+                            </p>
+                          </div>
                         </div>
+                        {foundation.imageUrl && (
+                          <div className="foundation-image-container relative h-48 rounded-md overflow-hidden border border-rose-100 group">
+                            <img
+                              src={foundation.imageUrl}
+                              alt={`${foundation.brand} ${foundation.name}`}
+                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.style.display = "none";
+                              }}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-rose-50/30 to-transparent" />
+                          </div>
+                        )}
                       </div>
-                      {foundation.imageUrl && (
-                        <div className="foundation-image-container relative h-48 rounded-md overflow-hidden border border-rose-100 group">
-                          <img
-                            src={foundation.imageUrl}
-                            alt={`${foundation.brand} ${foundation.name}`}
-                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.style.display = "none";
-                            }}
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-rose-50/30 to-transparent" />
-                        </div>
-                      )}
-                    </div>
+                    </a>
                   ))}
                 </div>
               </>
