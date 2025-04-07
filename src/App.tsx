@@ -19,9 +19,11 @@ function App() {
   const [aiResponse, setAiResponse] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [country, setCountry] = useState("");
-  const [foundations, setFoundations] = useState<FoundationData[]>([]);
+  const [_foundations, setFoundations] = useState<FoundationData[]>([]);
 
-  async function searchProductImages(query: string): Promise<string | null> {
+  async function searchProductImages(
+    query: string
+  ): Promise<string | null | undefined> {
     try {
       const response = await fetch("https://google.serper.dev/images", {
         method: "POST",
