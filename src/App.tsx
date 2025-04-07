@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -97,7 +97,8 @@ function App() {
       - Give me a list of foundations to buy with name, shade, and brand.
       - Foundations must be available in ${country || "Europe"}.
       - Use exact format: "- [Product Name], Shade: [Shade], Brand: [Brand]"
-      - Start immediately with color analysis.`;
+      - IMPORTANT!! You must only write two sections, first a in-depth skin analysys, and then the foundations recommendation.
+      - IMPORTANT!! When I say two sections, I mean ONLY TWO SECTIONS. You CANNOT write more than one 'foundation recommendation' section.`;
 
       const image = {
         inlineData: { data: imgSrc.split(",")[1], mimeType: "image/jpeg" },
