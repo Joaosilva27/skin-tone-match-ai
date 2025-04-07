@@ -10,7 +10,9 @@ const CustomWebcam: React.FC<CustomWebcamProps> = ({ setImgSrc }) => {
 
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current?.getScreenshot();
-    imageSrc && setImgSrc(imageSrc);
+    if (imageSrc) {
+      setImgSrc(imageSrc);
+    }
   }, [webcamRef, setImgSrc]);
 
   return (
