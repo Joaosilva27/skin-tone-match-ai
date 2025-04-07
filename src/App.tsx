@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -11,7 +11,9 @@ const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro-exp-03-25" });
 interface FoundationData {
   name: string;
   brand: string;
+  shade: string;
   imageUrl?: string | null;
+  fullLine: string;
 }
 
 function App() {
@@ -19,11 +21,10 @@ function App() {
   const [aiResponse, setAiResponse] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [country, setCountry] = useState("");
-  const [_foundations, setFoundations] = useState<FoundationData[]>([]);
+  const [foundations, setFoundations] = useState<FoundationData[]>([]);
+  const [analysisText, setAnalysisText] = useState<string>("");
 
-  async function searchProductImages(
-    query: string
-  ): Promise<string | null | undefined> {
+  async function searchProductImages(query: string) {
     try {
       const response = await fetch("https://google.serper.dev/images", {
         method: "POST",
@@ -31,53 +32,63 @@ function App() {
           "X-API-KEY": import.meta.env.VITE_API_SERPER_KEY,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ q: query }),
+        body: JSON.stringify({ q: `${query} foundation makeup product` }),
       });
 
       const data = await response.json();
-      return data.images[0]?.imageUrl || null; // Returns string or null
+      if (!data.images || data.images.length === 0) return null;
+      return data.images[0]?.imageUrl || null;
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching product image:", error);
+      return null;
     }
   }
 
-  async function processFoundations(responseText: string): Promise<string> {
+  async function processFoundations(responseText: string) {
+    // Split the response to separate analysis and foundation recommendations
+    const parts = responseText.split(/## Recommended Foundations/i);
+    const analysisSection = parts[0] || "";
+    setAnalysisText(analysisSection);
+
+    // Extract foundation recommendations
     const foundationLines = responseText
       .split("\n")
-      .filter((line) => line.startsWith("- ") && line.includes("Brand:"));
+      .filter(
+        (line) => line.trim().startsWith("- ") && line.includes("Brand:")
+      );
 
-    const processedFoundations = await Promise.all(
+    const processed = await Promise.all(
       foundationLines.map(async (line) => {
         const match = line.match(
           /-\s*(.*?),\s*Shade:\s*(.*?),\s*Brand:\s*(.*)/
         );
-        if (!match) return line;
+        if (!match) return null;
 
-        const [, name, , brand] = match;
-        const imageUrl = await searchProductImages(`${name} ${brand}`);
-        setFoundations((prev) => [
-          ...prev,
-          {
-            name,
-            brand,
-            imageUrl,
-          },
-        ]);
+        const [, name, shade, brand] = match;
+        const imageUrl = await searchProductImages(`${brand} ${name} ${shade}`);
 
-        return imageUrl ? `${line}\n![${name} ${brand}](${imageUrl})` : line;
+        return {
+          name: name.trim(),
+          brand: brand.trim(),
+          shade: shade.trim(),
+          imageUrl,
+          fullLine: line,
+        };
       })
     );
 
-    return responseText.replace(
-      /## Recommended Foundations[\s\S]*/,
-      `## Recommended Foundations\n${processedFoundations.join("\n")}`
-    );
+    // Filter out null entries
+    setFoundations(processed.filter(Boolean) as FoundationData[]);
+
+    return analysisSection;
   }
 
   async function run() {
     if (!imgSrc) return;
     setIsLoading(true);
     setFoundations([]);
+    setAnalysisText("");
+    setAiResponse("");
 
     try {
       const prompt = `You are a professional makeup analyzer:
@@ -93,10 +104,10 @@ function App() {
       };
 
       const { response } = await model.generateContent([prompt, image]);
-      const processedResponse = await processFoundations(response.text());
-      setAiResponse(processedResponse);
+      await processFoundations(response.text());
+      setAiResponse(response.text());
     } catch (error) {
-      console.log(error);
+      console.error("Error in analysis:", error);
     } finally {
       setIsLoading(false);
     }
@@ -149,8 +160,9 @@ function App() {
 
         {aiResponse && (
           <div className="ai-response-container">
+            {/* Skin Analysis Section */}
             <ReactMarkdown
-              children={aiResponse}
+              children={analysisText}
               remarkPlugins={[remarkGfm]}
               components={{
                 h1: ({ children }) => (
@@ -165,37 +177,47 @@ function App() {
                 strong: ({ children }) => (
                   <strong className="ai-response-bold">{children}</strong>
                 ),
-                ul: ({ children }) => (
-                  <ul className="ai-response-list">{children}</ul>
-                ),
-                ol: ({ children }) => (
-                  <ol className="ai-response-ordered-list">{children}</ol>
-                ),
-                li: ({ children }) => (
-                  <li className="ai-response-list-item">{children}</li>
-                ),
-                img: ({ src, alt }) => (
-                  <img
-                    src={src}
-                    alt={alt}
-                    className="foundation-image"
-                    crossOrigin="anonymous"
-                    decoding="async"
-                    loading="lazy"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      if (src?.startsWith("http")) {
-                        target.src = `https://corsproxy.io/?${encodeURIComponent(
-                          src
-                        )}`;
-                      } else {
-                        target.style.display = "none";
-                      }
-                    }}
-                  />
-                ),
               }}
             />
+
+            {/* Foundation Recommendations Section */}
+            {foundations.length > 0 && (
+              <>
+                <h3 className="ai-response-subheader">
+                  Recommended Foundations
+                </h3>
+                <div className="foundation-grid">
+                  {foundations.map((foundation, index) => (
+                    <div key={index} className="foundation-card">
+                      <div className="foundation-info">
+                        <p>
+                          <strong>{foundation.name}</strong>
+                        </p>
+                        <p>Brand: {foundation.brand}</p>
+                        <p>Shade: {foundation.shade}</p>
+                      </div>
+                      {foundation.imageUrl && (
+                        <div className="foundation-image-container">
+                          <img
+                            src={foundation.imageUrl}
+                            alt={`${foundation.brand} ${foundation.name}`}
+                            className="foundation-image"
+                            onError={(e) => {
+                              console.log(
+                                "Image failed to load:",
+                                foundation.imageUrl
+                              );
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = "none";
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>
