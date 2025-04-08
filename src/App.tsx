@@ -94,7 +94,7 @@ function App() {
       With the given picture:
       - Analyze my skin color and tell me what shade it is.
       - Give me a list of foundations to buy with name, shade, and brand.
-      - Foundations must be available in ${country || "Europe"}.
+      - Foundations must be available in ${country || "Globally"}.
       - Use exact format: "- [Product Name], Shade: [Shade], Brand: [Brand]"
       - IMPORTANT!! You must only write two sections, first a in-depth skin analysys, and then the foundations recommendation.
       - IMPORTANT!! When I say two sections, I mean ONLY TWO SECTIONS. You CANNOT write more than one 'foundation recommendation' section.`;
