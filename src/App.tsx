@@ -77,7 +77,6 @@ function App() {
       })
     );
 
-    // Filter out null entries
     setFoundations(processed.filter(Boolean) as FoundationData[]);
 
     return analysisSection;
