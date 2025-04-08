@@ -39,7 +39,6 @@ const CustomWebcam: React.FC<CustomWebcamProps> = ({ setImgSrc }) => {
       ) : (
         <div className="webcam-feed-disabled"></div>
       )}
-
       <div className="flex justify-center items-center">
         <button
           onClick={capture}

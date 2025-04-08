@@ -117,7 +117,7 @@ function App() {
     <div className="app-container pt-6">
       <header className="header">
         <h1 className="title-gradient">🌸 Skin Match AI</h1>
-        <p className="subtitle">Discover Your Perfect Makeup Match</p>
+        <p className="subtitle">Find Your Perfect Makeup Match</p>
       </header>
 
       <div className="content-wrapper">
@@ -184,20 +184,18 @@ function App() {
             {foundations.length > 0 && (
               <>
                 <h3 className="ai-response-subheader text-3xl font-medium mb-8 text-rose-500 text-center tracking-wide">
-                  Recommended Foundations
+                  🎀 Recommended Foundations 🎀
                 </h3>
                 <div className="foundation-grid flex flex-wrap justify-center gap-8 px-4">
                   {foundations.map((foundation, index) => (
                     <a
+                      key={index}
                       href={`https://www.google.com/search?q=${
                         foundation.brand + foundation.name + foundation.shade
                       }`}
                       target="_blank"
                     >
-                      <div
-                        key={index}
-                        className="foundation-card relative bg-gradient-to-br from-pink-50 to-rose-50 rounded-xl p-6 w-80 shadow-md hover:shadow-lg transition-all duration-300 border border-rose-100"
-                      >
+                      <div className="foundation-card relative bg-gradient-to-br from-pink-50 to-rose-50 rounded-xl p-6 w-80 shadow-md hover:shadow-lg transition-all duration-300 border border-rose-100">
                         <div className="foundation-info mb-4">
                           <p className="text-xl font-semibold text-rose-700 mb-3 tracking-tight">
                             {foundation.name}
