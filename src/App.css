@@ -40,7 +40,7 @@ body {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
   letter-spacing: -0.5px;
-  font-family: "Comic Sans MS", cursive;
+  font-family: "Comic Sans MS", "Poppins";
   text-shadow: 0 2px 10px rgba(255, 126, 182, 0.4);
 }
 
@@ -48,7 +48,7 @@ body {
   color: var(--hello-kitty-red);
   font-size: 1.1rem;
   font-weight: 500;
-  font-family: "Comic Sans MS", cursive;
+  font-family: "Comic Sans MS", "Poppins";
 }
 
 .content-wrapper {
@@ -162,7 +162,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  font-family: "Comic Sans MS", cursive;
+  font-family: "Comic Sans MS", "Poppins";
   box-shadow: 0 4px 0 #ff5a9e;
 }
 
@@ -193,7 +193,7 @@ body {
   margin: 2rem 0;
   display: block;
   box-shadow: 0 5px 0 #ff3d81;
-  font-family: "Comic Sans MS", cursive;
+  font-family: "Comic Sans MS", "Poppins";
   position: relative;
 }
 
@@ -239,14 +239,14 @@ body {
   margin-bottom: 1.5rem;
   border-bottom: 2px dotted var(--hello-kitty-pink);
   padding-bottom: 0.5rem;
-  font-family: "Comic Sans MS", cursive;
+  font-family: "Comic Sans MS", "Poppins";
 }
 
 .ai-response-subheader {
   color: var(--hello-kitty-red);
   font-size: 1.3rem;
   margin: 1.5rem 0;
-  font-family: "Comic Sans MS", cursive;
+  font-family: "Comic Sans MS", "Poppins";
   text-align: center;
   position: relative;
 }
@@ -448,7 +448,7 @@ body {
   font-size: 1rem;
   width: 200px;
   transition: border-color 0.3s ease;
-  font-family: "Comic Sans MS", cursive;
+  font-family: "Comic Sans MS", "Poppins";
 }
 
 .country-input:focus {
@@ -494,7 +494,7 @@ body {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
   letter-spacing: -0.5px;
-  font-family: "Comic Sans MS", cursive;
+  font-family: "Comic Sans MS", "Poppins";
   text-shadow: 0 2px 10px rgba(255, 126, 182, 0.8),
     0 0 3px rgba(255, 255, 255, 0.8), 0 0 5px rgba(255, 255, 255, 0.8);
   position: relative;
@@ -505,7 +505,7 @@ body {
   color: var(--hello-kitty-red);
   font-size: 1.2rem;
   font-weight: 600;
-  font-family: "Comic Sans MS", cursive;
+  font-family: "Comic Sans MS", "Poppins";
   text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);
   background: rgba(255, 255, 255, 0.5);
   display: inline-block;
@@ -548,7 +548,7 @@ body {
   color: var(--hello-kitty-red);
   font-size: 1.3rem;
   margin-bottom: 1rem;
-  font-family: "Comic Sans MS", cursive;
+  font-family: "Comic Sans MS", "Poppins";
   position: relative;
   display: inline-block;
 }
@@ -580,7 +580,7 @@ body {
   border: 2px solid var(--hello-kitty-pink);
   border-radius: 25px;
   padding: 0.8rem 1.5rem;
-  font-family: "Comic Sans MS", cursive;
+  font-family: "Comic Sans MS", "Poppins";
   font-size: 1rem;
   color: var(--hello-kitty-red);
   cursor: pointer;
@@ -640,7 +640,7 @@ body {
   border-radius: 10px;
   font-size: 0.8rem;
   text-transform: capitalize;
-  font-family: "Comic Sans MS", cursive;
+  font-family: "Comic Sans MS", "Poppins";
   box-shadow: 0 2px 5px rgba(255, 126, 182, 0.3);
   z-index: 2;
 }
