@@ -16,6 +16,8 @@ interface FoundationData {
   fullLine: string;
 }
 
+type MakeupType = "foundation" | "concealer" | "blush";
+
 function App() {
   const [imgSrc, setImgSrc] = useState<string | null>(null);
   const [aiResponse, setAiResponse] = useState<string>("");
@@ -23,6 +25,8 @@ function App() {
   const [country, setCountry] = useState("");
   const [foundations, setFoundations] = useState<FoundationData[]>([]);
   const [analysisText, setAnalysisText] = useState<string>("");
+  const [selectedMakeup, setSelectedMakeup] =
+    useState<MakeupType>("foundation");
 
   async function searchProductImages(query: string) {
     try {
@@ -32,7 +36,9 @@ function App() {
           "X-API-KEY": import.meta.env.VITE_API_SERPER_KEY,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ q: `${query} foundation makeup product` }),
+        body: JSON.stringify({
+          q: `${query} ${selectedMakeup} makeup product`,
+        }),
       });
 
       const data = await response.json();
@@ -45,20 +51,22 @@ function App() {
   }
 
   async function processFoundations(responseText: string) {
-    // Split the response to separate analysis and foundation recommendations
-    const parts = responseText.split(/## Recommended Foundations/i);
+    // Split the response to separate analysis and makeup recommendations
+    const parts = responseText.split(
+      new RegExp(`## Recommended ${getMakeupTitle(selectedMakeup)}`, "i")
+    );
     const analysisSection = parts[0] || "";
     setAnalysisText(analysisSection);
 
-    // Extract foundation recommendations
-    const foundationLines = responseText
+    // Extract makeup recommendations
+    const makeupLines = responseText
       .split("\n")
       .filter(
         (line) => line.trim().startsWith("- ") && line.includes("Brand:")
       );
 
     const processed = await Promise.all(
-      foundationLines.map(async (line) => {
+      makeupLines.map(async (line) => {
         const match = line.match(
           /-\s*(.*?),\s*Shade:\s*(.*?),\s*Brand:\s*(.*)/
         );
@@ -82,6 +90,60 @@ function App() {
     return analysisSection;
   }
 
+  function getMakeupTitle(type: MakeupType): string {
+    switch (type) {
+      case "foundation":
+        return "Foundations";
+      case "concealer":
+        return "Concealers";
+      case "blush":
+        return "Blushes";
+      default:
+        return "Products";
+    }
+  }
+
+  function getMakeupIcon(type: MakeupType): string {
+    switch (type) {
+      case "foundation":
+        return "💄";
+      case "concealer":
+        return "🖌️";
+      case "blush":
+        return "🌸";
+      default:
+        return "🎀";
+    }
+  }
+
+  function getMakeupPrompt(type: MakeupType): string {
+    const basePrompt = `You are a professional makeup analyzer. 
+      With the given picture:
+      - Analyze my skin color and tell me what shade it is.
+      - Give me a list of ${type}s to buy with name, shade, and brand.
+      - ${type}s must be available in ${country || "Globally"}.
+      - Use exact format: "- [Product Name], Shade: [Shade], Brand: [Brand]"
+      - IMPORTANT!! You must only write two sections, first a in-depth skin analysys, and then the ${type} recommendation.
+      - IMPORTANT!! When I say two sections, I mean ONLY TWO SECTIONS. You CANNOT write more than one '${type} recommendation' section.`;
+    // MUST keep above important prompt. For some reason gemini 2.5 pro model keeps generating sections non-stop
+    switch (type) {
+      case "foundation":
+        return basePrompt;
+      case "concealer":
+        return (
+          basePrompt +
+          "\n- Focus on concealers that would match my undertones and cover imperfections."
+        );
+      case "blush":
+        return (
+          basePrompt +
+          "\n- Recommend blush colors that would complement my skin tone and undertones."
+        );
+      default:
+        return basePrompt;
+    }
+  }
+
   async function run() {
     if (!imgSrc) return;
     setIsLoading(true);
@@ -90,14 +152,7 @@ function App() {
     setAiResponse("");
 
     try {
-      const prompt = `You are a professional makeup analyzer:
-      With the given picture:
-      - Analyze my skin color and tell me what shade it is.
-      - Give me a list of foundations to buy with name, shade, and brand.
-      - Foundations must be available in ${country || "Globally"}.
-      - Use exact format: "- [Product Name], Shade: [Shade], Brand: [Brand]"
-      - IMPORTANT!! You must only write two sections, first a in-depth skin analysys, and then the foundations recommendation.
-      - IMPORTANT!! When I say two sections, I mean ONLY TWO SECTIONS. You CANNOT write more than one 'foundation recommendation' section.`;
+      const prompt = getMakeupPrompt(selectedMakeup);
 
       const image = {
         inlineData: { data: imgSrc.split(",")[1], mimeType: "image/jpeg" },
@@ -132,6 +187,39 @@ function App() {
           )}
         </div>
 
+        <div className="makeup-selector-container">
+          <h3 className="selector-title">Choose Your Makeup Type</h3>
+          <div className="makeup-buttons">
+            <button
+              className={`makeup-button ${
+                selectedMakeup === "foundation" ? "active" : ""
+              }`}
+              onClick={() => setSelectedMakeup("foundation")}
+            >
+              <span className="makeup-icon">💄</span>
+              Foundation
+            </button>
+            <button
+              className={`makeup-button ${
+                selectedMakeup === "concealer" ? "active" : ""
+              }`}
+              onClick={() => setSelectedMakeup("concealer")}
+            >
+              <span className="makeup-icon">🖌️</span>
+              Concealer
+            </button>
+            <button
+              className={`makeup-button ${
+                selectedMakeup === "blush" ? "active" : ""
+              }`}
+              onClick={() => setSelectedMakeup("blush")}
+            >
+              <span className="makeup-icon">🌸</span>
+              Blush
+            </button>
+          </div>
+        </div>
+
         <div className="input-container flex justify-center items-center">
           <input
             type="text"
@@ -141,7 +229,9 @@ function App() {
             className="country-input"
           />
           <button onClick={run} className="analyze-button" disabled={isLoading}>
-            {isLoading ? "Analyzing..." : "Analyze My Skin"}
+            {isLoading
+              ? "Analyzing..."
+              : `Analyze for ${getMakeupTitle(selectedMakeup)}`}
           </button>
         </div>
 
@@ -180,11 +270,13 @@ function App() {
               }}
             />
 
-            {/* Foundation Recommendations Section */}
+            {/* Product Recommendations Section */}
             {foundations.length > 0 && (
               <>
                 <h3 className="ai-response-subheader text-3xl font-medium mb-8 text-rose-500 text-center tracking-wide">
-                  🎀 Recommended Foundations 🎀
+                  {getMakeupIcon(selectedMakeup)} Recommended{" "}
+                  {getMakeupTitle(selectedMakeup)}{" "}
+                  {getMakeupIcon(selectedMakeup)}
                 </h3>
                 <div className="foundation-grid flex flex-wrap justify-center gap-8 px-4">
                   {foundations.map((foundation, index) => (
@@ -196,6 +288,9 @@ function App() {
                       target="_blank"
                     >
                       <div className="foundation-card relative bg-gradient-to-br from-pink-50 to-rose-50 rounded-xl p-6 w-80 shadow-md hover:shadow-lg transition-all duration-300 border border-rose-100">
+                        <div className="makeup-type-label">
+                          {selectedMakeup}
+                        </div>
                         <div className="foundation-info mb-4">
                           <p className="text-xl font-semibold text-rose-700 mb-3 tracking-tight">
                             {foundation.name}
