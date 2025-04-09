@@ -121,11 +121,12 @@ function App() {
       With the given picture:
       - Analyze my skin color and tell me what shade it is.
       - Give me a list of ${type}s to buy with name, shade, and brand.
-      - ${type}s must be available in ${country || "Globally"}.
+      - ${type}s must be available in ${country || "Europe"}.
       - Use exact format: "- [Product Name], Shade: [Shade], Brand: [Brand]"
       - IMPORTANT!! You must only write two sections, first a in-depth skin analysys, and then the ${type} recommendation.
       - IMPORTANT!! When I say two sections, I mean ONLY TWO SECTIONS. You CANNOT write more than one '${type} recommendation' section.`;
     // MUST keep above important prompt. For some reason gemini 2.5 pro model keeps generating sections non-stop
+
     switch (type) {
       case "foundation":
         return basePrompt;
@@ -266,7 +267,9 @@ function App() {
                   <h3 className="ai-response-subheader">{children}</h3>
                 ),
                 p: ({ children }) => (
-                  <p className="ai-response-paragraph">{children}</p>
+                  <p className="ai-response-paragraph text-xs md:text-base">
+                    {children}
+                  </p>
                 ),
                 strong: ({ children }) => (
                   <strong className="ai-response-bold">{children}</strong>
@@ -280,7 +283,7 @@ function App() {
                 <h3 className="ai-response-subheader text-3xl font-medium mb-8 text-rose-500 text-center tracking-wide">
                   {getMakeupIcon(selectedMakeup)} Recommended{" "}
                   {getMakeupTitle(selectedMakeup)} available in{" "}
-                  <span className="capitalize">{country}</span>
+                  <span className="capitalize">{country || "Europe"}</span>
                   {getMakeupIcon(selectedMakeup)}
                 </h3>
                 <div className="foundation-grid flex flex-wrap justify-center gap-8 px-4">
