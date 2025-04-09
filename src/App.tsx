@@ -181,8 +181,12 @@ function App() {
             <CustomWebcam setImgSrc={setImgSrc} />
           </div>
           {imgSrc && (
-            <div className="preview-wrapper">
+            <div className="preview-wrapper flex items-center flex-col">
               <img src={imgSrc} alt="Captured" className="preview-image" />
+              <span className="mt-2 text-center text-pink-500">
+                ✨ Use natural lighting and a clear, close-up photo of your face
+                for the most accurate makeup matches! ✨
+              </span>
             </div>
           )}
         </div>
