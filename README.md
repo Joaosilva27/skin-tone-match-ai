@@ -17,10 +17,6 @@ Try the live demo here: [https://skin-tone-match-ai.vercel.app/](https://skin-to
 - [Tailwind CSS](https://tailwindcss.com/)  
 - [Google's Gemini API](https://aistudio.google.com/welcome?utm_source=google&utm_medium=cpc&utm_campaign=FY25-global-DR-gsem-BKWS-1710442&utm_content=text-ad-none-any-DEV_c-CRE_726094551010-ADGP_Hybrid%20%7C%20BKWS%20-%20EXA%20%7C%20Txt-Gemini%20(Top%20EEA)-Gemini%20API-KWID_43700081668030981-kwd-927524447508&utm_term=KW_gemini%20api-ST_gemini%20api&gad_source=1&gbraid=0AAAAACn9t64y7D7IyTraCMgdrp1FjgtvQ&gclid=CjwKCAjwtdi_BhACEiwA97y8BOGvHZlmCaX7ZwTAMLuCsC6z3UqOVLf1o4dGykIXqajUjacgryDNhhoCceYQAvD_BwE&gclsrc=aw.ds) (2.5-pro model)
 
-## License  
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 
 # React + TypeScript + Vite
 
