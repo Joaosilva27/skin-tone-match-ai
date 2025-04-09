@@ -16,7 +16,7 @@ interface FoundationData {
   fullLine: string;
 }
 
-type MakeupType = "foundation" | "concealer" | "blush";
+type MakeupType = "foundation" | "concealer" | "blush" | "custom";
 
 function App() {
   const [imgSrc, setImgSrc] = useState<string | null>(null);
@@ -27,6 +27,7 @@ function App() {
   const [analysisText, setAnalysisText] = useState<string>("");
   const [selectedMakeup, setSelectedMakeup] =
     useState<MakeupType>("foundation");
+  const [customMakeupType, setCustomMakeupType] = useState<string>("");
 
   async function searchProductImages(query: string) {
     try {
@@ -37,7 +38,9 @@ function App() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          q: `${query} ${selectedMakeup} makeup product`,
+          q: `${query} ${
+            selectedMakeup === "custom" ? customMakeupType : selectedMakeup
+          } makeup product`,
         }),
       });
 
@@ -52,8 +55,9 @@ function App() {
 
   async function processFoundations(responseText: string) {
     // Split the response to separate analysis and makeup recommendations
+    const makeupTitle = getMakeupTitle(selectedMakeup);
     const parts = responseText.split(
-      new RegExp(`## Recommended ${getMakeupTitle(selectedMakeup)}`, "i")
+      new RegExp(`## Recommended ${makeupTitle}`, "i")
     );
     const analysisSection = parts[0] || "";
     setAnalysisText(analysisSection);
@@ -98,6 +102,12 @@ function App() {
         return "Concealers";
       case "blush":
         return "Blushes";
+      case "custom":
+        return customMakeupType
+          ? customMakeupType.charAt(0).toUpperCase() +
+              customMakeupType.slice(1) +
+              "s"
+          : "Products";
       default:
         return "Products";
     }
@@ -111,20 +121,23 @@ function App() {
         return "🖌️";
       case "blush":
         return "🌸";
+      case "custom":
+        return "✨";
       default:
         return "🎀";
     }
   }
 
   function getMakeupPrompt(type: MakeupType): string {
+    const productType = type === "custom" ? customMakeupType : type;
     const basePrompt = `You are a professional makeup analyzer. 
       With the given picture:
       - Analyze my skin color and tell me what shade it is.
-      - Give me a list of ${type}s to buy with name, shade, and brand.
-      - ${type}s must be available in ${country || "Europe"}.
+      - Give me a list of ${productType}s to buy with name, shade, and brand.
+      - ${productType}s must be available in ${country || "Europe"}.
       - Use exact format: "- [Product Name], Shade: [Shade], Brand: [Brand]"
-      - IMPORTANT!! You must only write two sections, first a in-depth skin analysys, and then the ${type} recommendation.
-      - IMPORTANT!! When I say two sections, I mean ONLY TWO SECTIONS. You CANNOT write more than one '${type} recommendation' section.`;
+      - IMPORTANT!! You must only write two sections, first a in-depth skin analysys, and then the ${productType} recommendation.
+      - IMPORTANT!! When I say two sections, I mean ONLY TWO SECTIONS. You CANNOT write more than one '${productType} recommendation' section.`;
     // MUST keep above important prompt. For some reason gemini 2.5 pro model keeps generating sections non-stop
 
     switch (type) {
@@ -140,6 +153,11 @@ function App() {
           basePrompt +
           "\n- Recommend blush colors that would complement my skin tone and undertones."
         );
+      case "custom":
+        return (
+          basePrompt +
+          `\n- Focus on ${customMakeupType}s that would match my undertones and complement my features.`
+        );
       default:
         return basePrompt;
     }
@@ -147,6 +165,11 @@ function App() {
 
   async function run() {
     if (!imgSrc) return;
+    if (selectedMakeup === "custom" && !customMakeupType.trim()) {
+      alert("Please enter a custom makeup type");
+      return;
+    }
+
     setIsLoading(true);
     setFoundations([]);
     setAnalysisText("");
@@ -222,7 +245,28 @@ function App() {
               <span className="makeup-icon">🌸</span>
               Blush
             </button>
+            <button
+              className={`makeup-button ${
+                selectedMakeup === "custom" ? "active" : ""
+              }`}
+              onClick={() => setSelectedMakeup("custom")}
+            >
+              <span className="makeup-icon">✨</span>
+              Custom
+            </button>
           </div>
+
+          {selectedMakeup === "custom" && (
+            <div className="custom-makeup-input-container">
+              <input
+                type="text"
+                value={customMakeupType}
+                onChange={(e) => setCustomMakeupType(e.target.value)}
+                placeholder="Enter custom makeup type (e.g. lipstick, eyeshadow)"
+                className="custom-makeup-input"
+              />
+            </div>
+          )}
         </div>
 
         <div className="input-container flex justify-center items-center">
@@ -297,7 +341,9 @@ function App() {
                     >
                       <div className="foundation-card relative bg-gradient-to-br from-pink-50 to-rose-50 rounded-xl p-6 w-80 shadow-md hover:shadow-lg transition-all duration-300 border border-rose-100">
                         <div className="makeup-type-label">
-                          {selectedMakeup}
+                          {selectedMakeup === "custom"
+                            ? customMakeupType
+                            : selectedMakeup}
                         </div>
                         <div className="foundation-info mb-4">
                           <p className="text-xl font-semibold text-rose-700 mb-3 tracking-tight">
