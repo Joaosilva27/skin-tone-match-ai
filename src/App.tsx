@@ -279,7 +279,8 @@ function App() {
               <>
                 <h3 className="ai-response-subheader text-3xl font-medium mb-8 text-rose-500 text-center tracking-wide">
                   {getMakeupIcon(selectedMakeup)} Recommended{" "}
-                  {getMakeupTitle(selectedMakeup)}{" "}
+                  {getMakeupTitle(selectedMakeup)} available in{" "}
+                  <span className="capitalize">{country}</span>
                   {getMakeupIcon(selectedMakeup)}
                 </h3>
                 <div className="foundation-grid flex flex-wrap justify-center gap-8 px-4">
