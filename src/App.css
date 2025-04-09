@@ -645,7 +645,6 @@ body {
   z-index: 2;
 }
 
-/* Responsive fixes */
 @media (max-width: 768px) {
   .makeup-buttons {
     flex-direction: column;
@@ -706,6 +705,29 @@ body {
   color: #ffaac5;
 }
 
+.custom-makeup-disclaimer {
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  color: var(--hello-kitty-red);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 0.6rem 1rem;
+  border-radius: 15px;
+  border: 1px dotted var(--hello-kitty-pink);
+  font-family: "Comic Sans MS", "Poppins";
+  line-height: 1.4;
+  box-shadow: 0 2px 5px rgba(255, 126, 182, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.disclaimer-icon {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+  display: inline-block;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -721,10 +743,14 @@ body {
   animation: fadeIn 0.3s ease-out forwards;
 }
 
-/* Responsive styles */
 @media (max-width: 768px) {
   .custom-makeup-input-container {
     width: 90%;
+  }
+
+  .custom-makeup-disclaimer {
+    font-size: 0.75rem;
+    padding: 0.5rem;
   }
 }
 
@@ -732,5 +758,9 @@ body {
   .custom-makeup-input {
     padding: 0.6rem 1rem;
     font-size: 0.9rem;
+  }
+
+  .custom-makeup-disclaimer {
+    font-size: 0.7rem;
   }
 }

@@ -265,6 +265,11 @@ function App() {
                 placeholder="Enter custom makeup type (e.g. lipstick, eyeshadow)"
                 className="custom-makeup-input"
               />
+              <p className="custom-makeup-disclaimer">
+                <span className="disclaimer-icon">📸</span> For best results,
+                take a close-up picture focused on the relevant area (e.g., for
+                lipstick, focus on your lips; for eyeshadow, focus on your eyes)
+              </p>
             </div>
           )}
         </div>
