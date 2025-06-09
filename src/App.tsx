@@ -6,7 +6,7 @@ import CustomWebcam from "./components/CustomWebcam";
 import "./App.css";
 
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro-exp-03-25" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro-preview-05-06" });
 
 interface FoundationData {
   name: string;
